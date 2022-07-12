@@ -1,6 +1,6 @@
 FROM golang:1.16-alpine as builder
 RUN go version
-RUN apk update && apk add --no-cache git
+RUN apk update && apk add --no-cache git asdasd
 WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download && go mod verify
