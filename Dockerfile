@@ -1,21 +1,14 @@
-FROM heroku/heroku:20-build as build
+FROM golang:1.16-alpine as builder
+RUN go version
+RUN apk update && apk add --no-cache git
+WORKDIR /src
+COPY go.mod go.sum ./
+RUN go mod download && go mod verify
+COPY . .
+RUN go build -o bin/go-getting-started -v .
 
-COPY . /app
-WORKDIR /app
-
-# Setup buildpack
-RUN mkdir -p /tmp/buildpack/heroku/go /tmp/build_cache /tmp/env
-RUN curl https://buildpack-registry.s3.amazonaws.com/buildpacks/heroku/go.tgz | tar xz -C /tmp/buildpack/heroku/go
-
-#Execute Buildpack
-RUN STACK=heroku-20 /tmp/buildpack/heroku/go/bin/compile /app /tmp/build_cache /tmp/env
-
-# Prepare final, minimal image
-FROM heroku/heroku:20
-
-COPY --from=build /app /app
-ENV HOME /app
-WORKDIR /app
-RUN useradd -m heroku
-USER heroku
-CMD /app/bin/go-getting-started
+FROM alpine:3
+RUN apk add --no-cache ca-certificates tzdata
+COPY --from=builder /src/bin /bin
+USER nobody:nobody
+CMD [ "/bin/go-getting-started" ]
