@@ -17,7 +17,7 @@ func main() {
 	environs := os.Environ()
 
 	router := http.NewServeMux()
-	router.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	router.Handle("/ping", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		json.NewEncoder(w).Encode(map[string]interface{}{
 			"version": Version,
