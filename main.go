@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	port := os.Getenv("PORT")
+	port := os.Getenv("XPORT")
 	if port == "" {
 		log.Fatal("$PORT must be set")
 	}
@@ -16,7 +16,7 @@ func main() {
 	router := http.NewServeMux()
 	router.Handle("/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]interface{}{
-			"tag": "1",
+			"tag": "10",
 			"env": os.Environ(),
 		})
 	}))
