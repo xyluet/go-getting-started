@@ -13,6 +13,5 @@ WORKDIR /src
 COPY --from=builder /src/bin /bin
 COPY --from=builder /src/start.sh start.sh
 USER nobody:nobody
-RUN ls -la
 # CMD [ "/bin/go-getting-started" ]
 ENTRYPOINT [ "sh", "start.sh" ]
